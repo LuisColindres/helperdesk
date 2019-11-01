@@ -1,0 +1,14 @@
+/home/lcolindres/Documents/templates/HelperDesk.API/bin/Debug/netcoreapp2.2/HelperDesk.API.deps.json
+/home/lcolindres/Documents/templates/HelperDesk.API/bin/Debug/netcoreapp2.2/HelperDesk.API.runtimeconfig.json
+/home/lcolindres/Documents/templates/HelperDesk.API/bin/Debug/netcoreapp2.2/HelperDesk.API.runtimeconfig.dev.json
+/home/lcolindres/Documents/templates/HelperDesk.API/bin/Debug/netcoreapp2.2/HelperDesk.API.dll
+/home/lcolindres/Documents/templates/HelperDesk.API/bin/Debug/netcoreapp2.2/HelperDesk.API.pdb
+/home/lcolindres/Documents/templates/HelperDesk.API/obj/Debug/netcoreapp2.2/HelperDesk.API.csprojAssemblyReference.cache
+/home/lcolindres/Documents/templates/HelperDesk.API/obj/Debug/netcoreapp2.2/HelperDesk.API.csproj.CoreCompileInputs.cache
+/home/lcolindres/Documents/templates/HelperDesk.API/obj/Debug/netcoreapp2.2/HelperDesk.API.RazorAssemblyInfo.cache
+/home/lcolindres/Documents/templates/HelperDesk.API/obj/Debug/netcoreapp2.2/HelperDesk.API.RazorAssemblyInfo.cs
+/home/lcolindres/Documents/templates/HelperDesk.API/obj/Debug/netcoreapp2.2/HelperDesk.API.AssemblyInfoInputs.cache
+/home/lcolindres/Documents/templates/HelperDesk.API/obj/Debug/netcoreapp2.2/HelperDesk.API.AssemblyInfo.cs
+/home/lcolindres/Documents/templates/HelperDesk.API/obj/Debug/netcoreapp2.2/HelperDesk.API.RazorTargetAssemblyInfo.cache
+/home/lcolindres/Documents/templates/HelperDesk.API/obj/Debug/netcoreapp2.2/HelperDesk.API.dll
+/home/lcolindres/Documents/templates/HelperDesk.API/obj/Debug/netcoreapp2.2/HelperDesk.API.pdb
