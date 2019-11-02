@@ -27,9 +27,9 @@ namespace HelperDesk.API.Controllers
         {
             var roles = await _repo.List();
 
-            var rolesToReturn = _mapper.Map<List<RoleForAddDto>>(roles);
+            // var rolesToReturn = _mapper.Map<List<RoleForAddDto>>(roles);
 
-            return Ok(rolesToReturn);
+            return Ok(roles);
         }
 
         [HttpGet("{id}")]
@@ -37,9 +37,9 @@ namespace HelperDesk.API.Controllers
         {
             var role = await _repo.GetRole(id);
 
-            var roleToReturn = _mapper.Map<RoleForAddDto>(role);
+            // var roleToReturn = _mapper.Map<RoleForAddDto>(role);
 
-            return Ok(roleToReturn);
+            return Ok(role);
         }
 
         [HttpPost("add")]

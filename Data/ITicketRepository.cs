@@ -9,9 +9,8 @@ namespace HelperDesk.API.Data
     {
          Task<Ticket> Add(Ticket ticket);
          void AddTicketDetail(TicketDetail ticketDetail);
-         Task<List<Ticket>> GetTickets();
+         Task<List<TicketForListDto>> GetTickets();
          Task<Ticket> GetTicket(int id);
-
          Task<IEnumerable<TicketForResolveDto>> GetTicketsResolved();
          Task<bool> SaveAll();
          

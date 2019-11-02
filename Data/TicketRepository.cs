@@ -61,7 +61,7 @@ namespace HelperDesk.API.Data
             return ticket;
         }
 
-        public async Task<List<Ticket>> GetTickets()
+        public async Task<List<TicketForListDto>> GetTickets()
         {
             var tickets = await (from e in _context.Tickets
                         join requestinUser in _context.Users on e.RequestingUserId equals requestinUser.Id
@@ -70,22 +70,23 @@ namespace HelperDesk.API.Data
                         join usserAssing in _context.Users on e.UserAssingId equals usserAssing.Id
                         join assignedUser in _context.Users on e.AssignedUserId equals assignedUser.Id
                         join ticketStatus in _context.TicketStatus on e.TicketStatusId equals ticketStatus.Id
-                        select new Ticket{
+                        select new TicketForListDto{
                             Id = e.Id,
                             Description = e.Description,
-                            RequestingUser = requestinUser,
+                            // RequestingUserName = requestinUser.Names + ' ' + requestinUser.LastName,
                             RequestingUserId = e.RequestingUserId,
-                            TicketType = ticketType,
+                            TicketTypeDescription = ticketType.Description,
                             TicketTypeId = e.TicketTypeId,
-                            TicketCategory = ticketCategory,
+                            TicketCategoryDescription = ticketCategory.Description,
                             TicketCategoryId = e.TicketCategoryId,
-                            UserAssing = usserAssing,
+                            // UserAssingName = usserAssing.Names + ' ' + usserAssing.LastName,
                             UserAssingId = e.UserAssingId,
-                            AssignedUser = e.AssignedUser,
+                            // AssignedUserName = e.AssignedUser.Names + ' ' + usserAssing.LastName,
+                            AssignedUserId = e.AssignedUserId,
                             AssignationDate = e.AssignationDate,
-                            TicketStatus = ticketStatus,
+                            TicketStatusDescription = ticketStatus.Description,
                             TicketStatusId = e.TicketStatusId,
-                            CreatedAt = e.CreatedAt
+                            UpdatedAt = e.UpdatedAt
                         }).ToListAsync();
                         
 

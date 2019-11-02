@@ -47,12 +47,14 @@ namespace HelperDesk.API
             services.AddAutoMapper(typeof(GenderRepository).Assembly);
             services.AddAutoMapper(typeof(UserRepository).Assembly);
             services.AddAutoMapper(typeof(CatalogsRepository).Assembly);
+            services.AddAutoMapper(typeof(TicketRepository).Assembly);
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<IGenderRepository, GenderRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ICatalogsRepository, CatalogsRepository>();
+            services.AddScoped<ITicketRepository, TicketRepository>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {
                     options.TokenValidationParameters = new TokenValidationParameters
