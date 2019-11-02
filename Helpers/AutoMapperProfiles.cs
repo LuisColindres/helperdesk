@@ -14,7 +14,8 @@ namespace HelperDesk.API.Helpers
             CreateMap<Company, CompanyForUpdateDto>();
             CreateMap<Gender, GenderForUpdateDto>();
             CreateMap<TicketCategory, TicketCategoryForUpdateDto>().ReverseMap();
-            CreateMap<Ticket, TicketForUpdateDto>().ReverseMap();
+            CreateMap<TicketForListDto, TicketForUpdateDto>().ReverseMap();
+            CreateMap<TicketForListDto, TicketForAssingDto>().ReverseMap();
             CreateMap<TicketDetail, TicketDetailForUpdateDto>().ReverseMap();
             CreateMap<TicketStatus, TicketStatusForUpdateDto>().ReverseMap();
             CreateMap<TicketType, TicketTypeForUpdateDto>().ReverseMap();

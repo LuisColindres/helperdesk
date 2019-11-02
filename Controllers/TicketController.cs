@@ -40,45 +40,82 @@ namespace HelperDesk.API.Controllers
             return Ok(ticket);
         }
 
-        [HttpPost("Add")]
-        public async Task<IActionResult> Add(Ticket ticket)
+        [HttpPost("add")]
+        public async Task<IActionResult> Add(JObject data)
         {
-            await _repo.Add(ticket);
 
-            return Ok();
+            TicketForRegisterDto ticket = data["ticketData"].ToObject<TicketForRegisterDto>();
+            TicketDetail detailDto = data["detailData"].ToObject<TicketDetail>();
+
+            int ticketId = await _repo.Add(ticket);
+
+            detailDto.TicketId = ticketId;
+            _repo.AddTicketDetail(detailDto);
+
+            if( await _repo.SaveAll())
+                return Ok(ticketId);
+
+            throw new Exception($"Error al actualizar al crear el ticket");
+            
         }
 
         [HttpPut("edit/{id}")]
         public async Task<IActionResult> Update(int id, TicketForUpdateDto ticketForUpdateDto)
         {
-            var ticket = await _repo.GetTicket(id);
+            await _repo.Edit(ticketForUpdateDto, id);
 
-            _mapper.Map(ticketForUpdateDto, ticket);
+            return StatusCode(200);
+            // var ticket = await _repo.GetTicket(id);
 
-            if (await _repo.SaveAll())
-                return NoContent();
+            // // return Ok(ticket);
+            // _mapper.Map(ticket, ticketForUpdateDto);
 
-            throw new Exception($"Error al actualizar el ticket {id}");
+            // if (await _repo.SaveAll())
+            //     return NoContent();
+
+            // throw new Exception($"Error al actualizar el ticket {id}");
         }
 
         [HttpPut("assign/{id}")]
         // public async Task<IActionResult> AssignTicket(int id, TicketForUpdateDto ticketForUpdateDto)
         public async Task<IActionResult> AssignTicket(int id, JObject data)
         {
-            TicketForUpdateDto ticketForUpdateDto = data["ticketData"].ToObject<TicketForUpdateDto>();
+            TicketForAssingDto ticketForAssingDto = data["ticketData"].ToObject<TicketForAssingDto>();
             TicketDetail detailDto = data["detailData"].ToObject<TicketDetail>();
 
-            var ticketFromRepo = await _repo.GetTicket(id);
+            var ticketId = await _repo.UpdateTicket(ticketForAssingDto, id);
 
-            ticketForUpdateDto.UpdatedAt = new DateTime();
-            _mapper.Map(ticketForUpdateDto, ticketFromRepo);
+            // var ticketFromRepo = await _repo.GetTicket(id);
 
+            // return Ok(ticketFromRepo);
+
+            // ticketForAssingDto.UpdatedAt = new DateTime();
+            // _mapper.Map(ticketForAssingDto, ticketFromRepo);
+
+            detailDto.TicketId = ticketId;
             _repo.AddTicketDetail(detailDto);
 
             if( await _repo.SaveAll())
                 return NoContent();
 
             throw new Exception($"Error al actualizar la categoria de ticket {id}");
+        }
+
+        [HttpPut("serve/{id}")]
+        public async Task<IActionResult> ServeTicket(int id, JObject data)
+        {
+            TicketForServeDto ticketForServeDto = data["ticketData"].ToObject<TicketForServeDto>();
+            TicketDetail detailDto = data["detailData"].ToObject<TicketDetail>();
+
+            await _repo.ServeTicket(ticketForServeDto, id);
+
+            detailDto.TicketId = id;
+            _repo.AddTicketDetail(detailDto);
+
+            if( await _repo.SaveAll())
+                return NoContent();
+
+            throw new Exception($"Error al actualizar al atender el ticket {id}");
         }
     }
 }

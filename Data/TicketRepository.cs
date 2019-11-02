@@ -16,12 +16,19 @@ namespace HelperDesk.API.Data
 
         }
 
-        public async Task<Ticket> Add(Ticket ticket)
+        public async Task<int> Add(TicketForRegisterDto ticketForRegisterDto)
         {
-            await _context.Tickets.AddAsync(ticket);
+            var ticketToCreate = new Ticket {
+                Description = ticketForRegisterDto.Description,
+                RequestingUserId = ticketForRegisterDto.RequestingUserId,
+                TicketTypeId = ticketForRegisterDto.TicketTypeId,
+                TicketCategoryId = ticketForRegisterDto.TicketCategoryId,
+                TicketStatusId = ticketForRegisterDto.TicketStatusId
+            };
+            await _context.Tickets.AddAsync(ticketToCreate);
             await _context.SaveChangesAsync();
 
-            return null;
+            return ticketToCreate.Id;
         }
 
         public void AddTicketDetail(TicketDetail ticketDetail)
@@ -29,32 +36,46 @@ namespace HelperDesk.API.Data
             _context.TicketDetails.Add(ticketDetail);
         }
 
-        public async Task<Ticket> GetTicket(int id)
+        public async Task<bool> Edit(TicketForUpdateDto ticket, int id)
+        {
+            _context.Entry(await _context.Tickets.FirstOrDefaultAsync(x => x.Id == id)).CurrentValues.SetValues(ticket);
+            await _context.SaveChangesAsync();
+
+            return true;   
+        }
+
+        public async Task<TicketForListDto> GetTicket(int id)
         {
             // var ticket = await _context.Tickets.FirstOrDefaultAsync(x => x.Id == id);
             var ticket = await (from e in _context.Tickets
                         join requestinUser in _context.Users on e.RequestingUserId equals requestinUser.Id
                         join ticketType in _context.TicketTypes on e.TicketTypeId equals ticketType.Id
                         join ticketCategory in _context.TicketCategories on e.TicketCategoryId equals ticketCategory.Id
-                        join usserAssing in _context.Users on e.UserAssingId equals usserAssing.Id
-                        join assignedUser in _context.Users on e.AssignedUserId equals assignedUser.Id
                         join ticketStatus in _context.TicketStatus on e.TicketStatusId equals ticketStatus.Id
-                        select new Ticket{
+                        join usserAssing in _context.Users on e.UserAssingId equals usserAssing.Id into us
+                        from us1 in us.DefaultIfEmpty()
+                        join assignedUser in _context.Users on e.AssignedUserId equals assignedUser.Id into au
+                        from au1 in au.DefaultIfEmpty()
+                        join ticketDetail in _context.TicketDetails.Where(dt => dt.TracingStatusId == 1) on e.Id equals ticketDetail.TicketId into td
+                        from td1 in td.DefaultIfEmpty()
+                        select new TicketForListDto{
                             Id = e.Id,
                             Description = e.Description,
-                            RequestingUser = requestinUser,
+                            RequestingUserName = requestinUser.Names + " " + requestinUser.LastName,
                             RequestingUserId = e.RequestingUserId,
-                            TicketType = ticketType,
+                            TicketTypeDescription = ticketType.Description,
                             TicketTypeId = e.TicketTypeId,
-                            TicketCategory = ticketCategory,
+                            TicketCategoryDescription = ticketCategory.Description,
                             TicketCategoryId = e.TicketCategoryId,
-                            UserAssing = usserAssing,
+                            UserAssingName = us1.Names + " " + us1.LastName,
                             UserAssingId = e.UserAssingId,
-                            AssignedUser = e.AssignedUser,
+                            AssignedUserName = au1.Names + " " + au1.LastName,
+                            AssignedUserId = e.AssignedUserId,
                             AssignationDate = e.AssignationDate,
-                            TicketStatus = ticketStatus,
+                            TicketStatusDescription = ticketStatus.Description,
                             TicketStatusId = e.TicketStatusId,
-                            CreatedAt = e.CreatedAt
+                            DetailTicketDescription = td1.Description,
+                            UpdatedAt = e.UpdatedAt
                         }).FirstOrDefaultAsync(x => x.Id == id);
                         
 
@@ -67,25 +88,30 @@ namespace HelperDesk.API.Data
                         join requestinUser in _context.Users on e.RequestingUserId equals requestinUser.Id
                         join ticketType in _context.TicketTypes on e.TicketTypeId equals ticketType.Id
                         join ticketCategory in _context.TicketCategories on e.TicketCategoryId equals ticketCategory.Id
-                        join usserAssing in _context.Users on e.UserAssingId equals usserAssing.Id
-                        join assignedUser in _context.Users on e.AssignedUserId equals assignedUser.Id
                         join ticketStatus in _context.TicketStatus on e.TicketStatusId equals ticketStatus.Id
+                        join usserAssing in _context.Users on e.UserAssingId equals usserAssing.Id into us
+                        from us1 in us.DefaultIfEmpty()
+                        join assignedUser in _context.Users on e.AssignedUserId equals assignedUser.Id into au
+                        from au1 in au.DefaultIfEmpty()
+                        join ticketDetail in _context.TicketDetails.Where(dt => dt.TracingStatusId == 4) on e.Id equals ticketDetail.TicketId into td
+                        from td1 in td.DefaultIfEmpty()
                         select new TicketForListDto{
                             Id = e.Id,
                             Description = e.Description,
-                            // RequestingUserName = requestinUser.Names + ' ' + requestinUser.LastName,
+                            RequestingUserName = requestinUser.Names + " " + requestinUser.LastName,
                             RequestingUserId = e.RequestingUserId,
                             TicketTypeDescription = ticketType.Description,
                             TicketTypeId = e.TicketTypeId,
                             TicketCategoryDescription = ticketCategory.Description,
                             TicketCategoryId = e.TicketCategoryId,
-                            // UserAssingName = usserAssing.Names + ' ' + usserAssing.LastName,
+                            UserAssingName = us1.Names + " " + us1.LastName,
                             UserAssingId = e.UserAssingId,
-                            // AssignedUserName = e.AssignedUser.Names + ' ' + usserAssing.LastName,
+                            AssignedUserName = au1.Names + " " + au1.LastName,
                             AssignedUserId = e.AssignedUserId,
                             AssignationDate = e.AssignationDate,
                             TicketStatusDescription = ticketStatus.Description,
                             TicketStatusId = e.TicketStatusId,
+                            DetailTicketDescription = td1.Description,
                             UpdatedAt = e.UpdatedAt
                         }).ToListAsync();
                         
@@ -116,6 +142,20 @@ namespace HelperDesk.API.Data
         public async Task<bool> SaveAll()
         {
             return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> ServeTicket(TicketForServeDto ticket, int id)
+        {
+            _context.Entry(await _context.Tickets.FirstOrDefaultAsync(x => x.Id == id)).CurrentValues.SetValues(ticket);
+
+            return true;
+        }
+
+        public async Task<int> UpdateTicket(TicketForAssingDto ticket, int id)
+        {
+            _context.Entry(await _context.Tickets.FirstOrDefaultAsync(x => x.Id == id)).CurrentValues.SetValues(ticket);
+
+            return id;
         }
     }
 }

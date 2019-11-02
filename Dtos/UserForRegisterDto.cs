@@ -5,7 +5,7 @@ namespace HelperDesk.API.Dtos
     public class UserForRegisterDto
     {
         [Required (ErrorMessage = "Ingrese su nombre")]
-        public string Name { get; set; }
+        public string Names { get; set; }
 
         [Required (ErrorMessage = "Ingrese su apellido")]
         public string LastName { get; set; }

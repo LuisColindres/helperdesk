@@ -39,12 +39,20 @@ namespace HelperDesk.API.Controllers
             return Ok(user);
         }
 
+        [HttpGet("byrole/{roleId}")]
+        public async Task<IActionResult> GetByRole(int roleId)
+        {
+            var users = await _repo.GetUserForRole(roleId);
+
+            return Ok(users);
+        }
+
         [HttpPost("add")]
         public async Task<IActionResult> Add(UserForRegisterDto userForRegisterDTO)
         {
             var userToCreate = new User
             {
-                Names = userForRegisterDTO.Name,
+                Names = userForRegisterDTO.Names,
                 LastName = userForRegisterDTO.LastName,
                 Email = userForRegisterDTO.Email,
                 Phone = userForRegisterDTO.Phone,

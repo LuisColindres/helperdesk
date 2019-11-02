@@ -7,12 +7,15 @@ namespace HelperDesk.API.Data
 {
     public interface ITicketRepository
     {
-         Task<Ticket> Add(Ticket ticket);
+         Task<int> Add(TicketForRegisterDto ticket);
          void AddTicketDetail(TicketDetail ticketDetail);
+         Task<int> UpdateTicket(TicketForAssingDto ticket, int id);
          Task<List<TicketForListDto>> GetTickets();
-         Task<Ticket> GetTicket(int id);
+         Task<TicketForListDto> GetTicket(int id);
          Task<IEnumerable<TicketForResolveDto>> GetTicketsResolved();
          Task<bool> SaveAll();
+         Task<bool> ServeTicket(TicketForServeDto ticket, int id);
+         Task<bool> Edit(TicketForUpdateDto ticket, int id);
          
     }
 }

@@ -12,6 +12,7 @@ namespace HelperDesk.API.Data
          Task<List<UserForListDto>> GetUsers();
          Task<UserForListDto> GetUser(int id);
          Task<bool> SaveAll();
+         Task<List<UserForListDto>> GetUserForRole(int roleId);
 
     }
 }
