@@ -32,9 +32,23 @@ namespace HelperDesk.API.Controllers
             if (await _repo.UserExists(userForRegisterDTO.Username))
                 return BadRequest("El usuario ya existe");
 
-            var userToCreate = new User
+            // var userToCreate = new User
+            //{
+            //    Username = userForRegisterDTO.Username
+            //};
+
+	    var userToCreate = new User
             {
-                Username = userForRegisterDTO.Username
+                Names = userForRegisterDTO.Names,
+                LastName = userForRegisterDTO.LastName,
+                Email = userForRegisterDTO.Email,
+                Phone = userForRegisterDTO.Phone,
+                GenderId = userForRegisterDTO.GenderId,
+                RoleId = userForRegisterDTO.RoleId,
+                CompanyId = userForRegisterDTO.CompanyId,
+                status = userForRegisterDTO.status,
+                Username = userForRegisterDTO.Username,
+
             };
 
             var createdUser = await _repo.Register(userToCreate, userForRegisterDTO.Password);
