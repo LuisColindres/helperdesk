@@ -3,14 +3,16 @@ using System;
 using HelperDesk.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HelperDesk.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200828221453_AddedSessionEntity")]
+    partial class AddedSessionEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,30 +70,6 @@ namespace HelperDesk.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
-                });
-
-            modelBuilder.Entity("HelperDesk.API.Models.Sessions", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("Active");
-
-                    b.Property<int>("Attempts");
-
-                    b.Property<DateTime>("CreatedAt");
-
-                    b.Property<string>("Information");
-
-                    b.Property<DateTime>("UpdatedAt");
-
-                    b.Property<int>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Sessions");
                 });
 
             modelBuilder.Entity("HelperDesk.API.Models.Ticket", b =>
@@ -243,8 +221,6 @@ namespace HelperDesk.API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<bool>("Active");
-
                     b.Property<int>("CompanyId");
 
                     b.Property<DateTime>("CreatedAt")
@@ -282,14 +258,6 @@ namespace HelperDesk.API.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("HelperDesk.API.Models.Sessions", b =>
-                {
-                    b.HasOne("HelperDesk.API.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("HelperDesk.API.Models.Ticket", b =>

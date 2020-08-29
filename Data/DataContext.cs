@@ -17,6 +17,7 @@ namespace HelperDesk.API.Data
         public DbSet<TicketStatus> TicketStatus { get; set; }
         public DbSet<TicketType> TicketTypes { get; set; }
         public DbSet<TracingStatus> TracingStatus { get; set; }
+        public DbSet<Sessions> Sessions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

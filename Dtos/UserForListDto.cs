@@ -36,5 +36,7 @@ namespace HelperDesk.API.Dtos
         public DateTime UpdatedAt { get; set; }
 
         public int Status { get; set; }
+
+        public string Authy_id { get; set; }
     }
 }

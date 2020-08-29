@@ -19,8 +19,11 @@ namespace HelperDesk.API.Dtos
         public string Username { get; set; }
 
         [Required (ErrorMessage = "La contraseña es requerida")]
-        [StringLength(8, MinimumLength = 4, ErrorMessage = "Debe especificar una contraseña entre 4 y 8 caracteres")]
+        [StringLength(15, MinimumLength = 8, ErrorMessage = "Debe especificar una contraseña entre 8 y 15 caracteres")]
         public string Password { get; set; }
+
+        // [Required (ErrorMessage = "Es neceario tener un codigo de verificación")]
+        // public string Authy_id { get; set; }
 
         public int GenderId { get; set; }
 

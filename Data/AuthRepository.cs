@@ -2,15 +2,19 @@ using System;
 using System.Threading.Tasks;
 using HelperDesk.API.Models;
 using Microsoft.EntityFrameworkCore;
+using HelperDesk.API.Dtos;
+using AutoMapper;
 
 namespace HelperDesk.API.Data
 {
     public class AuthRepository : IAuthRepository
     {
         private readonly DataContext _context;
-        public AuthRepository(DataContext context)
+        private readonly IMapper _mapper;
+        public AuthRepository(DataContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
         public async Task<User> Login(string username, string password)
         {
@@ -21,6 +25,14 @@ namespace HelperDesk.API.Data
 
             if(!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
                 return null;
+
+            // var useToActive = new UserForActivateDto
+            // {
+            //     Active = true
+            // };
+
+            // _context.Entry(await _context.Users.FirstOrDefaultAsync(x => x.Id == user.Id)).CurrentValues.SetValues(useToActive);
+            // await _context.SaveChangesAsync();
 
             return user;
         }
@@ -69,6 +81,49 @@ namespace HelperDesk.API.Data
                 return true;
 
             return false;
+        }
+
+        public async Task<Sessions> Add(Sessions sessions)
+        {
+            await _context.Sessions.AddAsync(sessions);
+            await _context.SaveChangesAsync();
+
+            return sessions;
+        }
+
+        public async Task<User> UserActive(string username)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Username == username);
+
+            if (user == null)
+                return null;
+
+            return user;
+        }
+
+        public async Task<User> ChangeActive(int userId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
+
+            var useToActive = new UserForActivateDto
+            {
+                Active = false
+            };
+
+            _context.Entry(await _context.Users.FirstOrDefaultAsync(x => x.Id == user.Id)).CurrentValues.SetValues(useToActive);
+            await _context.SaveChangesAsync();
+
+            return user;
+
+        }
+
+        public async Task<UserForListDto> GetUser(int id)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+
+            var userToReturn = _mapper.Map<UserForListDto>(user);
+
+            return userToReturn;
         }
     }
 }

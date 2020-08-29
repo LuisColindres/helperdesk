@@ -37,5 +37,8 @@ namespace HelperDesk.API.Models
         public DateTime UpdatedAt { get; set; }
 
         public int status { get; set; }
+
+        public Boolean Active { get; set; }
+        public string Authy_id { get; set; }
     }
 }

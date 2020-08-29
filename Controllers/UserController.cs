@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HelperDesk.API.Controllers
 {
-    [Authorize]
+    // [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -60,7 +60,9 @@ namespace HelperDesk.API.Controllers
                 RoleId = userForRegisterDTO.RoleId,
                 CompanyId = userForRegisterDTO.CompanyId,
                 status = userForRegisterDTO.status,
-                Username = userForRegisterDTO.Username,
+                Username = userForRegisterDTO.Username
+                // Authy_id = "1"
+                // Authy_id = userForRegisterDTO.Authy_id
 
             };
 
