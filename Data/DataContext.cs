@@ -18,6 +18,9 @@ namespace HelperDesk.API.Data
         public DbSet<TicketType> TicketTypes { get; set; }
         public DbSet<TracingStatus> TracingStatus { get; set; }
         public DbSet<Sessions> Sessions { get; set; }
+        public DbSet<Department> Department { get; set; }
+        public DbSet<Position> Position { get; set; }
+        public DbSet<Document> Document { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -76,6 +79,18 @@ namespace HelperDesk.API.Data
                 .HasDefaultValueSql("datetime('now')");
 
             modelBuilder.Entity<TracingStatus>()
+                .Property(ts => ts.CreatedAt)
+                .HasDefaultValueSql("datetime('now')");
+
+            modelBuilder.Entity<Department>()
+                .Property(ts => ts.CreatedAt)
+                .HasDefaultValueSql("datetime('now')");
+
+            modelBuilder.Entity<Position>()
+                .Property(ts => ts.CreatedAt)
+                .HasDefaultValueSql("datetime('now')");
+
+            modelBuilder.Entity<Document>()
                 .Property(ts => ts.CreatedAt)
                 .HasDefaultValueSql("datetime('now')");
         }

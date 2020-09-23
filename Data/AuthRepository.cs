@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using HelperDesk.API.Models;
 using Microsoft.EntityFrameworkCore;
 using HelperDesk.API.Dtos;
+using System.Linq;
 using AutoMapper;
 
 namespace HelperDesk.API.Data
@@ -119,7 +120,25 @@ namespace HelperDesk.API.Data
 
         public async Task<UserForListDto> GetUser(int id)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            // var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            var user = await (from e in _context.Users
+                        join role in _context.Roles on e.RoleId equals role.Id
+                        select new UserForListDto{
+                            Id = e.Id,
+                            Names = e.Names,
+                            LastName = e.LastName,
+                            CompleteName = e.Names + " " + e.LastName,
+                            Email = e.Email,
+                            Phone = e.Phone,
+                            Username = e.Username,
+                            RoleDescription = role.RoleDescription,
+                            RoleId = role.Id,
+                            Status = e.status,
+                            add = role.add,
+                            edit = role.edit,
+                            delete = role.delete,
+                            Authy_id = e.Authy_id
+                        }).FirstOrDefaultAsync(x => x.Id == id);
 
             var userToReturn = _mapper.Map<UserForListDto>(user);
 

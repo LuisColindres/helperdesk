@@ -3,14 +3,16 @@ using System;
 using HelperDesk.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HelperDesk.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200911215602_PositionTemplate")]
+    partial class PositionTemplate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,58 +36,6 @@ namespace HelperDesk.API.Migrations
                     b.ToTable("Companies");
                 });
 
-            modelBuilder.Entity("HelperDesk.API.Models.Department", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("datetime('now')");
-
-                    b.Property<string>("Description");
-
-                    b.Property<int>("Status");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Department");
-                });
-
-            modelBuilder.Entity("HelperDesk.API.Models.Document", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Comment");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("datetime('now')");
-
-                    b.Property<int>("CreatedByUserId");
-
-                    b.Property<string>("Description");
-
-                    b.Property<string>("Name");
-
-                    b.Property<int>("PositionId");
-
-                    b.Property<int>("Status");
-
-                    b.Property<DateTime>("UpdatedAt");
-
-                    b.Property<int>("UpdatedByUserId");
-
-                    b.Property<string>("file");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PositionId");
-
-                    b.ToTable("Document");
-                });
-
             modelBuilder.Entity("HelperDesk.API.Models.Gender", b =>
                 {
                     b.Property<int>("Id")
@@ -104,62 +54,6 @@ namespace HelperDesk.API.Migrations
                     b.ToTable("Genders");
                 });
 
-            modelBuilder.Entity("HelperDesk.API.Models.Position", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("datetime('now')");
-
-                    b.Property<int>("CreatedByUserId");
-
-                    b.Property<int>("DepartmentId");
-
-                    b.Property<string>("Dimension");
-
-                    b.Property<string>("Education");
-
-                    b.Property<DateTime>("EndDatePerfomance");
-
-                    b.Property<DateTime>("EndDateSkills");
-
-                    b.Property<string>("Experience");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("OrganizationalPosition");
-
-                    b.Property<string>("OtherSkills");
-
-                    b.Property<string>("Scope");
-
-                    b.Property<string>("Skills");
-
-                    b.Property<DateTime>("StartDatePerfomance");
-
-                    b.Property<DateTime>("StartDateSkills");
-
-                    b.Property<int>("Status");
-
-                    b.Property<string>("Target");
-
-                    b.Property<DateTime>("UpdatedAt");
-
-                    b.Property<int>("UpdatedByUserId");
-
-                    b.Property<int>("UserReportedId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DepartmentId");
-
-                    b.HasIndex("UserReportedId");
-
-                    b.ToTable("Position");
-                });
-
             modelBuilder.Entity("HelperDesk.API.Models.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -170,12 +64,6 @@ namespace HelperDesk.API.Migrations
                         .HasDefaultValueSql("datetime('now')");
 
                     b.Property<string>("RoleDescription");
-
-                    b.Property<bool>("add");
-
-                    b.Property<bool>("delete");
-
-                    b.Property<bool>("edit");
 
                     b.Property<bool>("status");
 
@@ -398,27 +286,6 @@ namespace HelperDesk.API.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("HelperDesk.API.Models.Document", b =>
-                {
-                    b.HasOne("HelperDesk.API.Models.Position", "Position")
-                        .WithMany()
-                        .HasForeignKey("PositionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("HelperDesk.API.Models.Position", b =>
-                {
-                    b.HasOne("HelperDesk.API.Models.Department", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("HelperDesk.API.Models.User", "UserReported")
-                        .WithMany()
-                        .HasForeignKey("UserReportedId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("HelperDesk.API.Models.Sessions", b =>

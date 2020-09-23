@@ -37,6 +37,12 @@ namespace HelperDesk.API.Dtos
 
         public int Status { get; set; }
 
+        public bool add { get; set; }
+
+        public bool edit { get; set; }
+
+        public bool delete { get; set; }
+
         public string Authy_id { get; set; }
     }
 }

@@ -42,6 +42,14 @@ namespace HelperDesk.API.Controllers
             return Ok(role);
         }
 
+        [HttpGet("user/{userId}")]
+        public async Task<IActionResult> GetRoleByUser(int userId)
+        {
+            var role = await _repo.GetRoleByUser(userId);
+
+            return Ok(role);
+        }
+
         [HttpPost("add")]
         public async Task<IActionResult> Add(Role role)
         {

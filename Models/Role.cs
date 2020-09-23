@@ -11,6 +11,12 @@ namespace HelperDesk.API.Models
 
         public bool status { get; set; }
 
+        public bool add { get; set; }
+
+        public bool edit { get; set; }
+
+        public bool delete { get; set; }
+
         public DateTime CreatedAt { get; set; }
 
         public List<User> Users { get; set; }

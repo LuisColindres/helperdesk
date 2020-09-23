@@ -61,6 +61,8 @@ namespace HelperDesk.API
             services.AddAutoMapper(typeof(UserRepository).Assembly);
             services.AddAutoMapper(typeof(CatalogsRepository).Assembly);
             services.AddAutoMapper(typeof(TicketRepository).Assembly);
+            services.AddAutoMapper(typeof(DepartmentRepository).Assembly);
+            services.AddAutoMapper(typeof(PositionRepository).Assembly);
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<ICompanyRepository, CompanyRepository>();
@@ -68,6 +70,8 @@ namespace HelperDesk.API
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ICatalogsRepository, CatalogsRepository>();
             services.AddScoped<ITicketRepository, TicketRepository>();
+            services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            services.AddScoped<IPositionRepository, PositionRepository>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {
                     options.TokenValidationParameters = new TokenValidationParameters
