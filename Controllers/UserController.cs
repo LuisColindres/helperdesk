@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HelperDesk.API.Controllers
 {
-    [Authorize]
+    // [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -43,6 +43,14 @@ namespace HelperDesk.API.Controllers
         public async Task<IActionResult> GetByRole(int roleId)
         {
             var users = await _repo.GetUserForRole(roleId);
+
+            return Ok(users);
+        }
+
+        [HttpGet("bydepartment/{departmentId}")]
+        public async Task<IActionResult> GetByDepartment(int departmentId)
+        {
+            var users = await _repo.GetUsersForDepartment(departmentId);
 
             return Ok(users);
         }

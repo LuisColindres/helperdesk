@@ -21,6 +21,8 @@ namespace HelperDesk.API.Data
         public DbSet<Department> Department { get; set; }
         public DbSet<Position> Position { get; set; }
         public DbSet<Document> Document { get; set; }
+        public DbSet<Management> Management { get; set; }
+        public DbSet<Email> Email { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -91,6 +93,14 @@ namespace HelperDesk.API.Data
                 .HasDefaultValueSql("datetime('now')");
 
             modelBuilder.Entity<Document>()
+                .Property(ts => ts.CreatedAt)
+                .HasDefaultValueSql("datetime('now')");
+
+            modelBuilder.Entity<Management>()
+                .Property(ts => ts.CreatedAt)
+                .HasDefaultValueSql("datetime('now')");
+
+            modelBuilder.Entity<Email>()
                 .Property(ts => ts.CreatedAt)
                 .HasDefaultValueSql("datetime('now')");
         }

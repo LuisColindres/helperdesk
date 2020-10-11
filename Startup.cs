@@ -72,6 +72,8 @@ namespace HelperDesk.API
             services.AddScoped<ITicketRepository, TicketRepository>();
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             services.AddScoped<IPositionRepository, PositionRepository>();
+            services.AddScoped<IManagamentRepository, ManagamentRepository>();
+            services.AddScoped<IEmailRepository, EmailRepository>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {
                     options.TokenValidationParameters = new TokenValidationParameters

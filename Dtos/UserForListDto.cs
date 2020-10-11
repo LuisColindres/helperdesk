@@ -31,6 +31,11 @@ namespace HelperDesk.API.Dtos
 
         public int CompanyId { get; set; }
 
+        public Position Position { get; set; }
+        public int PositionId { get; set; }
+        public Department Department { get; set; }
+        public int DepartmentId { get; set; }
+        public string DepartmentDescription { get; set; }
         public DateTime CreatedAt { get; set; }
 
         public DateTime UpdatedAt { get; set; }

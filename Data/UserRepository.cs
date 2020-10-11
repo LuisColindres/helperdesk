@@ -78,6 +78,39 @@ namespace HelperDesk.API.Data
             return users;
         }
 
+        public async Task<List<UserForListDto>> GetUsersForDepartment(int departmentId) {
+            
+            var users = await (from e in _context.Users
+                                join position in _context.Position on e.PositionId equals position.Id
+                                join department in _context.Department on position.DepartmentId equals department.Id
+                            //    join gender in _context.Genders on e.GenderId equals gender.Id
+                            //    join role in _context.Roles on e.RoleId equals role.Id
+                            //    join company in _context.Companies on e.CompanyId equals company.Id
+                               select new UserForListDto
+                               {
+                                   Id = e.Id,
+                                   Names = e.Names,
+                                   LastName = e.LastName,
+                                   CompleteName = e.Names + " " + e.LastName,
+                                   Department = department,
+                                   DepartmentId = department.Id,
+                                //    Gender = gender,
+                                //    GenderId = e.GenderId,
+                                   Email = e.Email,
+                                   Phone = e.Phone,
+                                   Username = e.Username,
+                                //    Role = role,
+                                //    RoleId = e.RoleId,
+                                //    RoleDescription = role.RoleDescription,
+                                //    Company = company,
+                                //    CompanyId = e.CompanyId,
+                                   CreatedAt = e.CreatedAt,
+                                   Status = e.status
+                               }).Where(x => x.DepartmentId == departmentId).ToListAsync();
+
+            return users;
+        }
+
         public async Task<List<UserForListDto>> GetUsers()
         {
             // var users = await _context.Users.ToListAsync();
@@ -85,6 +118,8 @@ namespace HelperDesk.API.Data
                                join gender in _context.Genders on e.GenderId equals gender.Id
                                join role in _context.Roles on e.RoleId equals role.Id
                                join company in _context.Companies on e.CompanyId equals company.Id
+                               join position in _context.Position on e.PositionId equals position.Id
+                               join department in _context.Department on position.DepartmentId equals department.Id
                                select new UserForListDto
                                {
                                    Id = e.Id,
@@ -102,6 +137,9 @@ namespace HelperDesk.API.Data
                                    Company = company,
                                    CompanyId = e.CompanyId,
                                    CreatedAt = e.CreatedAt,
+                                   Department = department,
+                                   DepartmentId = department.Id,
+                                   DepartmentDescription = department.Description,
                                    Status = e.status
                                }).ToListAsync();
 

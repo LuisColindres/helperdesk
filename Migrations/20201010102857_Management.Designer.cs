@@ -3,14 +3,16 @@ using System;
 using HelperDesk.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HelperDesk.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20201010102857_Management")]
+    partial class Management
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,36 +88,6 @@ namespace HelperDesk.API.Migrations
                     b.ToTable("Document");
                 });
 
-            modelBuilder.Entity("HelperDesk.API.Models.Email", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("datetime('now')");
-
-                    b.Property<int>("CreatedByUserId");
-
-                    b.Property<string>("ForwardEmail");
-
-                    b.Property<int>("ManagamentId");
-
-                    b.Property<string>("Message");
-
-                    b.Property<int>("Status");
-
-                    b.Property<string>("Subject");
-
-                    b.Property<int>("Type");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ManagamentId");
-
-                    b.ToTable("Email");
-                });
-
             modelBuilder.Entity("HelperDesk.API.Models.Gender", b =>
                 {
                     b.Property<int>("Id")
@@ -152,8 +124,6 @@ namespace HelperDesk.API.Migrations
                     b.Property<string>("Description");
 
                     b.Property<string>("File");
-
-                    b.Property<string>("Response");
 
                     b.Property<int>("Status");
 
@@ -478,14 +448,6 @@ namespace HelperDesk.API.Migrations
                     b.HasOne("HelperDesk.API.Models.Position", "Position")
                         .WithMany()
                         .HasForeignKey("PositionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("HelperDesk.API.Models.Email", b =>
-                {
-                    b.HasOne("HelperDesk.API.Models.Management", "Managament")
-                        .WithMany()
-                        .HasForeignKey("ManagamentId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

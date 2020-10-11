@@ -9,7 +9,7 @@ namespace HelperDesk.API.Models
         public string Name { get; set; }
         public Department Department { get; set; }
         public int DepartmentId { get; set; }
-        public User UserReported { get; set; }
+        public User User { get; set; }
         public int UserReportedId { get; set; }
         public string Target { get; set; }
         public string OrganizationalPosition { get; set; }
