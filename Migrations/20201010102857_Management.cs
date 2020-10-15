@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace HelperDesk.API.Migrations
 {
@@ -12,6 +13,8 @@ namespace HelperDesk.API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy",
+                        MySqlValueGenerationStrategy.IdentityColumn)
                         .Annotation("Sqlite:Autoincrement", true),
                     DepartmentId = table.Column<int>(nullable: false),
                     UserCreatedId = table.Column<int>(nullable: false),
