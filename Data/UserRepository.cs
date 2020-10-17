@@ -5,6 +5,7 @@ using AutoMapper;
 using HelperDesk.API.Dtos;
 using HelperDesk.API.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace HelperDesk.API.Data
 {
@@ -120,6 +121,10 @@ namespace HelperDesk.API.Data
                                join company in _context.Companies on e.CompanyId equals company.Id
                                join position in _context.Position on e.PositionId equals position.Id
                                join department in _context.Department on position.DepartmentId equals department.Id
+                            //    join position in _context.Position on e.PositionId equals position.Id into ps 
+                            //    from ps1 in ps.DefaultIfEmpty()
+                            //    join department in _context.Department on ps1.DepartmentId equals department.Id into dp
+                            //    from dp1 in dp.DefaultIfEmpty()
                                select new UserForListDto
                                {
                                    Id = e.Id,
@@ -159,6 +164,51 @@ namespace HelperDesk.API.Data
                 passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             }
 
+        }
+
+        public async Task<List<UserForListDto>> GetUsersByFilter(int departmentId, DateTime startDate, DateTime endDate)
+        {
+            var users = (from e in _context.Users
+                               join gender in _context.Genders on e.GenderId equals gender.Id
+                               join role in _context.Roles on e.RoleId equals role.Id
+                               join company in _context.Companies on e.CompanyId equals company.Id
+                               join position in _context.Position on e.PositionId equals position.Id
+                               join department in _context.Department on position.DepartmentId equals department.Id
+                               select new UserForListDto
+                               {
+                                   Id = e.Id,
+                                   Names = e.Names,
+                                   LastName = e.LastName,
+                                   CompleteName = e.Names + " " + e.LastName,
+                                   Gender = gender,
+                                   GenderId = e.GenderId,
+                                   Email = e.Email,
+                                   Phone = e.Phone,
+                                   Username = e.Username,
+                                   Role = role,
+                                   RoleId = e.RoleId,
+                                   RoleDescription = role.RoleDescription,
+                                   Position = position,
+                                   PositionDescription = position.Name,
+                                   Company = company,
+                                   CompanyId = e.CompanyId,
+                                   CreatedAt = e.CreatedAt,
+                                   Department = department,
+                                   DepartmentId = department.Id,
+                                   DepartmentDescription = department.Description,
+                                   Status = e.status
+                               })
+                               .Where(x => x.CreatedAt >= startDate)
+                               .Where(x => x.CreatedAt <= endDate);
+                            //    .ToListAsync();
+
+            if (departmentId > 0) {
+                users = users.Where(x => x.DepartmentId == departmentId);
+            }
+
+            var list = await users.ToListAsync();
+
+            return list;
         }
     }
 }

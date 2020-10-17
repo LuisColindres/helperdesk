@@ -40,6 +40,14 @@ namespace HelperDesk.API.Controllers
             return Ok(position);
         }
 
+        [HttpGet("byfilter/{departmentId}")]
+        public async Task<IActionResult> GetPositionByFilter(int departmentId)
+        {
+            var positions = await _repo.GetPositionByFiler(departmentId);
+
+            return Ok(positions);
+        }
+
         [HttpPost("add")]
         public async Task<IActionResult> Add(JObject data)
         {

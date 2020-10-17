@@ -47,6 +47,14 @@ namespace HelperDesk.API.Controllers
             return Ok(managament);
         }
 
+        [HttpPost("byfilter")]
+        public async Task<IActionResult> GetManagamentByFilter(ManagamentForFilterDto managament) 
+        {
+            var managaments = await _repo.GetManagamentByFilter(managament.DepartmentId, managament.Status);
+
+            return Ok(managaments);
+        }
+
         [HttpPost("add")]
         public async Task<IActionResult> Add(Management management)
         {
@@ -86,7 +94,7 @@ namespace HelperDesk.API.Controllers
             clt.Status = 1;
             clt.CreatedByUserId = management.CreatedByUserId;
 
-            var email = _repoEmail.Add(clt);
+            var email = await _repoEmail.Add(clt);
 
             MailAddress fromCopy = new MailAddress("luiscolindres07@gmail.com", "Aseguramiento", System.Text.Encoding.UTF8);
             MailAddress toCopy = new MailAddress(userAssigned.Email);
@@ -96,7 +104,7 @@ namespace HelperDesk.API.Controllers
             messageCopy.Body += "\nUsuario: " + user.Names + " " + user.LastName;
             messageCopy.Body += "\nDescripcion: " + management.Description;
 
-            message.Subject = "Creación de PNC";
+            messageCopy.Subject = "Creación de PNC";
 
             await client.SendMailAsync(messageCopy);
 
@@ -109,7 +117,7 @@ namespace HelperDesk.API.Controllers
             worker.Status = 1;
             worker.CreatedByUserId = management.CreatedByUserId;
 
-            var emailWorker = _repoEmail.Add(worker);
+            var emailWorker = await _repoEmail.Add(worker);
 
             message.Dispose();
             

@@ -4,6 +4,7 @@ using HelperDesk.API.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using HelperDesk.API.Dtos;
+using System;
 
 namespace HelperDesk.API.Data
 {
@@ -57,6 +58,44 @@ namespace HelperDesk.API.Data
                             ).FirstOrDefaultAsync(x => x.Id == id);
 
             return management;
+        }
+
+        public async Task<List<ManagamentForListDto>> GetManagamentByFilter(int departmentId, int status)
+        {
+            var management = (from e in _context.Management
+                                join department in _context.Department on e.DepartmentId equals department.Id
+                                join user in _context.Users on e.UserCreatedId equals user.Id
+                                join assignedUser in _context.Users on e.AssignedUserId equals assignedUser.Id
+                                select new ManagamentForListDto{
+                                    Id = e.Id,
+                                    DepartmentId = department.Id,
+                                    Department = department.Description,
+                                    UserCreatedId = user.Id,
+                                    UserCreated = user.Names + " " + user.LastName,
+                                    AssignedUserId = assignedUser.Id,
+                                    AssignedUser = assignedUser.Names + " " + assignedUser.LastName,
+                                    Description = e.Description,
+                                    File = e.File,
+                                    Response = e.Response,
+                                    Status = e.Status,
+                                    CreatedByUserId = e.CreatedByUserId,
+                                    CreatedAt = e.CreatedAt,
+                                    UpdatedByUserId = e.UpdatedByUserId,
+                                    UpdatedAt = e.UpdatedAt                                    
+                                }
+                            );
+
+            if (departmentId > 0) {
+                management = management.Where(x => x.DepartmentId == departmentId);
+            }
+
+            if (status > 0) {
+                management = management.Where(x => x.Status == status);
+            }
+
+            var list = await management.ToListAsync();
+
+            return list;
         }
 
         public async Task<List<ManagamentForListDto>> List()

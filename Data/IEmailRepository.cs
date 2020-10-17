@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HelperDesk.API.Dtos;
@@ -14,5 +15,7 @@ namespace HelperDesk.API.Data
          Task<List<EmailForListDto>> List();
 
          Task<EmailForListDto> Get(int id);
+
+         Task<List<EmailForListDto>> GetEmailByFilter(int departmentId, DateTime startDate, DateTime endDate);
     }
 }

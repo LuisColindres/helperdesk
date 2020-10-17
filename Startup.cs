@@ -47,8 +47,8 @@ namespace HelperDesk.API
         }
         public void ConfigureServices(IServiceCollection services)
         {
-            // services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDbContext<DataContext>(x => x.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            // services.AddDbContext<DataContext>(x => x.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(opt => {
                     opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
@@ -74,6 +74,7 @@ namespace HelperDesk.API
             services.AddScoped<IPositionRepository, PositionRepository>();
             services.AddScoped<IManagamentRepository, ManagamentRepository>();
             services.AddScoped<IEmailRepository, EmailRepository>();
+            services.AddScoped<ISessionRepository, SessionRepository>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {
                     options.TokenValidationParameters = new TokenValidationParameters
@@ -118,6 +119,7 @@ namespace HelperDesk.API
             app.UseAuthentication();
             app.UseDefaultFiles();
             app.UseStaticFiles();
+            // app.UseMvc();
             app.UseMvc(routes => 
             {
                 routes.MapSpaFallbackRoute(

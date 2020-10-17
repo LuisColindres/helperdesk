@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HelperDesk.API.Models;
@@ -67,6 +68,36 @@ namespace HelperDesk.API.Data
                             ).ToListAsync();
 
             return email;
+        }
+
+        public async Task<List<EmailForListDto>> GetEmailByFilter(int departmentId, DateTime startDate, DateTime endDate)
+        {
+            var email = (from e in _context.Email
+                            join managament in _context.Management on e.ManagamentId equals managament.Id
+                            join department in _context.Department on managament.DepartmentId equals department.Id
+                            select new EmailForListDto{
+                                Id = e.Id,
+                                Type = e.Type,
+                                Message = e.Message,
+                                Subject = e.Subject,
+                                ForwardEmail = e.ForwardEmail,
+                                ManagamentId = e.ManagamentId,
+                                Department = department,
+                                DepartmentDescription = department.Description,
+                                Status = e.Status,
+                                CreatedByUserId = e.CreatedByUserId,
+                                CreatedAt = e.CreatedAt        
+                            })
+                            .Where(x => x.CreatedAt >= startDate)
+                            .Where(x => x.CreatedAt <= endDate);
+
+            if (departmentId > 0) {
+                email = email.Where(x => x.Department.Id == departmentId);
+            }
+
+            var list = await email.ToListAsync();
+
+            return list;
         }
     }
 }

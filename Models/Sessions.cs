@@ -13,5 +13,16 @@ namespace HelperDesk.API.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
+        public Sessions() {
+
+        }
+
+        public Sessions(int UserId, string Information, int Active, DateTime CreatedAt){
+            this.UserId = UserId;
+            this.Information = Information;
+            this.Active = Active;
+            this.CreatedAt = CreatedAt;
+        }
+
     }
 }

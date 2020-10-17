@@ -37,6 +37,14 @@ namespace HelperDesk.API.Controllers
             return Ok(email);
         }
 
+        [HttpPost("byfilter")]
+        public async Task<IActionResult> GetByFilter(EmailForFilterDto email)
+        {
+            var emails = await _repo.GetEmailByFilter(email.DepartmentId, email.StartDate, email.EndDate);
+
+            return Ok(emails);
+        }
+
         [HttpPost("add")]
         public async Task<IActionResult> Add(Email email)
         {

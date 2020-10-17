@@ -6,6 +6,7 @@ using HelperDesk.API.Dtos;
 using HelperDesk.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace HelperDesk.API.Controllers
 {
@@ -51,6 +52,15 @@ namespace HelperDesk.API.Controllers
         public async Task<IActionResult> GetByDepartment(int departmentId)
         {
             var users = await _repo.GetUsersForDepartment(departmentId);
+
+            return Ok(users);
+        }
+
+        [HttpPost("byfilter")]
+        public async Task<IActionResult> GetByFilter(UserForFilterDto user)
+        {
+
+            var users = await _repo.GetUsersByFilter(user.DepartmentId, user.StartDate, user.EndDate);
 
             return Ok(users);
         }

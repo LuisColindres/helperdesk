@@ -111,7 +111,7 @@ namespace HelperDesk.API.Data
                 Active = false
             };
 
-            _context.Entry(await _context.Users.FirstOrDefaultAsync(x => x.Id == user.Id)).CurrentValues.SetValues(useToActive);
+            _context.Entry(await _context.Users.FirstOrDefaultAsync(x => x.Id == userId)).CurrentValues.SetValues(useToActive);
             await _context.SaveChangesAsync();
 
             return user;

@@ -21,6 +21,7 @@ namespace HelperDesk.API.Helpers
             CreateMap<TicketType, TicketTypeForUpdateDto>().ReverseMap();
             CreateMap<TracingStatus, TracingStatusForUpdateDto>().ReverseMap();
             CreateMap<Management, ManagamentForUpdateDto>().ReverseMap();
+            CreateMap<Sessions, SessionForUpdateDto>().ReverseMap();
         }
     }
 }

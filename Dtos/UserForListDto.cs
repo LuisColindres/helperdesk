@@ -33,6 +33,7 @@ namespace HelperDesk.API.Dtos
 
         public Position Position { get; set; }
         public int PositionId { get; set; }
+        public string PositionDescription { get; set; }
         public Department Department { get; set; }
         public int DepartmentId { get; set; }
         public string DepartmentDescription { get; set; }

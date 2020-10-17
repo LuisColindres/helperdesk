@@ -14,5 +14,7 @@ namespace HelperDesk.API.Data
          Task<List<PositionForListDto>> List();
 
          Task<PositionForListDto> GetPosition(int id);
+
+         Task<List<PositionForListDto>> GetPositionByFiler(int departmentId);
     }
 }

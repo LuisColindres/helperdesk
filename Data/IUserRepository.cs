@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HelperDesk.API.Dtos;
@@ -14,5 +15,6 @@ namespace HelperDesk.API.Data
          Task<bool> SaveAll();
          Task<List<UserForListDto>> GetUserForRole(int roleId);
          Task<List<UserForListDto>> GetUsersForDepartment(int departmentId);
+         Task<List<UserForListDto>> GetUsersByFilter(int departmentId, DateTime startDate, DateTime endDate);
     }
 }

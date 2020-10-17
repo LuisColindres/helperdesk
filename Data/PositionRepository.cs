@@ -62,6 +62,43 @@ namespace HelperDesk.API.Data
             return position;
         }
 
+        public async Task<List<PositionForListDto>> GetPositionByFiler(int departmentId)
+        {
+            var position = (from e in _context.Position
+                            join department in _context.Department on e.DepartmentId equals department.Id
+                            join userReported in _context.Users on e.UserReportedId equals userReported.Id
+                            select new PositionForListDto{
+                                Id = e.Id,
+                                Name = e.Name,
+                                DepartmentId = department.Id,
+                                DepartmentDescription = department.Description,
+                                UserReportedId = userReported.Id,
+                                UserName = userReported.Names + " " + userReported.LastName,
+                                Target = e.Target,
+                                OrganizationalPosition = e.OrganizationalPosition,
+                                Scope = e.Scope,
+                                Dimension = e.Dimension,
+                                Education = e.Education,
+                                Experience = e.Experience,
+                                Skills = e.Skills,
+                                OtherSkills = e.OtherSkills,
+                                StartDateSkills = e.StartDateSkills,
+                                EndDateSkills = e.EndDateSkills,
+                                StartDatePerfomance = e.StartDatePerfomance,
+                                EndDatePerfomance = e.EndDatePerfomance,
+                                Status = e.Status,
+                                CreatedAt = e.CreatedAt
+                            });
+
+                if (departmentId > 0) {
+                    position = position.Where(x => x.DepartmentId == departmentId);
+                }
+
+                var list = await position.ToListAsync();
+
+            return list;
+        }
+
         public async Task<List<PositionForListDto>> List()
         {
             var position = await (from e in _context.Position

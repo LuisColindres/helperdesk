@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HelperDesk.API.Dtos;
@@ -14,5 +15,7 @@ namespace HelperDesk.API.Data
          Task<List<ManagamentForListDto>> List();
 
          Task<ManagamentForListDto> Get(int id);
+
+         Task<List<ManagamentForListDto>> GetManagamentByFilter(int departmentId, int status);
     }
 }

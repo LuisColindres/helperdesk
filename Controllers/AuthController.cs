@@ -24,10 +24,11 @@ namespace HelperDesk.API.Controllers
 
         private readonly IConfiguration _config;
 
-        private readonly ISessionRepository _reposession;
-        public AuthController(IAuthRepository repo, IConfiguration config){
+        private readonly ISessionRepository _repoSession;
+        public AuthController(IAuthRepository repo, ISessionRepository _repoSession, IConfiguration config){
             this._repo = repo;
             this._config = config;
+            this._repoSession = _repoSession;
         }
 
         [HttpPost("register")]
@@ -300,6 +301,18 @@ namespace HelperDesk.API.Controllers
             var tokenHandler = new JwtSecurityTokenHandler();
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            Sessions session = new Sessions(
+                usr.Id,
+                Request.Headers["User-Agent"].ToString(),
+                0,
+                new DateTime()
+            );
+            // session.UserId = usr.Id;
+            // session.Information = Request.Headers["User-Agent"].ToString();
+            // session.Active = 0;
+
+            await this._repoSession.Add(session);
 
             return Ok(new {
                 status = "OK",
