@@ -23,6 +23,7 @@ namespace HelperDesk.API.Data
         public DbSet<Document> Document { get; set; }
         public DbSet<Management> Management { get; set; }
         public DbSet<Email> Email { get; set; }
+        public DbSet<File> File { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -16,6 +16,7 @@ namespace HelperDesk.API.Dtos
         public int GenderId { get; set; }
         public int RoleId { get; set; }
         public int CompanyId { get; set; }
+        public int PositionId { get; set; }
         public DateTime UpdatedAt { get; set; }
 
         public int Status { get; set; }

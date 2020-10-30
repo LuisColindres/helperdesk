@@ -119,12 +119,12 @@ namespace HelperDesk.API.Data
                                join gender in _context.Genders on e.GenderId equals gender.Id
                                join role in _context.Roles on e.RoleId equals role.Id
                                join company in _context.Companies on e.CompanyId equals company.Id
-                               join position in _context.Position on e.PositionId equals position.Id
-                               join department in _context.Department on position.DepartmentId equals department.Id
-                            //    join position in _context.Position on e.PositionId equals position.Id into ps 
-                            //    from ps1 in ps.DefaultIfEmpty()
-                            //    join department in _context.Department on ps1.DepartmentId equals department.Id into dp
-                            //    from dp1 in dp.DefaultIfEmpty()
+                            //    join position in _context.Position on e.PositionId equals position.Id
+                            //    join department in _context.Department on position.DepartmentId equals department.Id
+                               join position in _context.Position on e.PositionId equals position.Id into ps 
+                               from ps1 in ps.DefaultIfEmpty()
+                               join department in _context.Department on ps1.DepartmentId equals department.Id into dp
+                               from dp1 in dp.DefaultIfEmpty()
                                select new UserForListDto
                                {
                                    Id = e.Id,
@@ -142,9 +142,12 @@ namespace HelperDesk.API.Data
                                    Company = company,
                                    CompanyId = e.CompanyId,
                                    CreatedAt = e.CreatedAt,
-                                   Department = department,
-                                   DepartmentId = department.Id,
-                                   DepartmentDescription = department.Description,
+                                   Department = (dp1 != null) ? dp1 : new Department(),
+                                //    DepartmentId = (dp1.Id != null) ? dp1.Id : 0,
+                                //    DepartmentDescription = dp1.Description,
+                                //    Department = department,
+                                //    DepartmentId = department.Id,
+                                //    DepartmentDescription = department.Description,
                                    Status = e.status
                                }).ToListAsync();
 

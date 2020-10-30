@@ -4,12 +4,16 @@ using AutoMapper;
 using HelperDesk.API.Data;
 using HelperDesk.API.Dtos;
 using HelperDesk.API.Models;
+using HelperDesk.API.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.ComponentModel;
+using Microsoft.Extensions.Options;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 
 namespace HelperDesk.API.Controllers
 {
@@ -18,17 +22,31 @@ namespace HelperDesk.API.Controllers
     public class ManagementController : ControllerBase
     {
         private readonly IManagamentRepository _repo;
+        private readonly IFileRepository _repoFile;
         private readonly IUserRepository _repoUser;
         public readonly IEmailRepository _repoEmail;
         private readonly IMapper _mapper;
+        private readonly IOptions<CloudinarySettings> _cloudinaryConfig;
+        private Cloudinary _cloudinary;
         static bool mailSent = false;
 
-        public ManagementController(IManagamentRepository repo, IUserRepository repoUser, IEmailRepository repoEmail, IMapper mapper)
+        public ManagementController(IManagamentRepository repo, IUserRepository repoUser, IEmailRepository repoEmail, IMapper mapper,
+            IOptions<CloudinarySettings> cloudinaryConfig, IFileRepository repoFile)
         {
             _repo = repo;
             _repoUser = repoUser;
             _repoEmail = repoEmail;
             _mapper = mapper;
+            _cloudinaryConfig = cloudinaryConfig;
+            _repoFile = repoFile;
+
+            Account account = new Account(
+                _cloudinaryConfig.Value.CloudName,
+                _cloudinaryConfig.Value.ApiKey,
+                _cloudinaryConfig.Value.ApiSecret
+            );
+
+            _cloudinary = new Cloudinary(account);
         }
 
         [HttpGet]
@@ -55,8 +73,24 @@ namespace HelperDesk.API.Controllers
             return Ok(managaments);
         }
 
+        [HttpGet("byuser/{userId}")]
+        public async Task<IActionResult> GetManagamentByuser(int userId)
+        {
+            var managaments = await _repo.GetManagamentByUser(userId);
+
+            return Ok(managaments);
+        }
+
+        [HttpGet("tracing/byuser/{userId}")]
+        public async Task<IActionResult> GetManagamentTracingByUser(int userId)
+        {
+            var managaments = await _repo.GetManagamentTracingByUser(userId);
+
+            return Ok(managaments);
+        }
+
         [HttpPost("add")]
-        public async Task<IActionResult> Add(Management management)
+        public async Task<IActionResult> Add(ManagamentForCreateDto managamentForCreateDto)
         {
 
             // Position position = data["position"].ToObject<Position>();
@@ -64,10 +98,44 @@ namespace HelperDesk.API.Controllers
 
             // int positionId = await _repo.Add(position);
 
+            Management management = new Management();
+            management.DepartmentId = managamentForCreateDto.DepartmentId;
+            management.UserCreatedId = managamentForCreateDto.UserCreatedId;
+            management.AssignedUserId = managamentForCreateDto.AssignedUserId;
+            management.Description = managamentForCreateDto.Description;
+            management.Status = managamentForCreateDto.Status;
+            management.CreatedByUserId = managamentForCreateDto.CreatedByUserId;
+
             var addedManagamentId = await _repo.Add(management);
+
+            // var file = managamentForCreateDto.File;
 
             var user = await _repoUser.GetUser(management.UserCreatedId);
             var userAssigned = await _repoUser.GetUser(management.AssignedUserId);
+
+            // var uploadResult = new ImageUploadResult();
+
+            // if (file.Length > 0) 
+            // {
+            //     using (var stream = file.OpenReadStream())
+            //     {
+            //         var uploadParams = new ImageUploadParams()
+            //         {
+            //             File = new FileDescription(file.Name, stream)                         
+            //         };
+
+            //         uploadResult = _cloudinary.Upload(uploadParams);
+            //     }
+            // }
+
+            // File tmpFile = new File();
+            // tmpFile.Url = uploadResult.Url.ToString();
+            // tmpFile.PublicId = uploadResult.PublicId;
+            // tmpFile.Description = "Imagen de PNC No. " + addedManagamentId;
+            // tmpFile.isMain = true;
+            // tmpFile.ManagementId = addedManagamentId;
+
+            // var fileId = _repoFile.Add(tmpFile);
 
             SmtpClient client = new SmtpClient("smtp.gmail.com", 587);
             client.EnableSsl = true;

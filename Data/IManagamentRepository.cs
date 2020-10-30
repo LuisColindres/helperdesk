@@ -17,5 +17,9 @@ namespace HelperDesk.API.Data
          Task<ManagamentForListDto> Get(int id);
 
          Task<List<ManagamentForListDto>> GetManagamentByFilter(int departmentId, int status);
+
+         Task<List<ManagamentForListDto>> GetManagamentByUser(int userId);
+
+         Task<List<ManagamentForListDto>> GetManagamentTracingByUser(int userId);
     }
 }
