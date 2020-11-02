@@ -98,6 +98,81 @@ namespace HelperDesk.API.Data
             return list;
         }
 
+        public async Task<List<ManagamentForListDto>> GetManagamentByUser(int userId)
+        {
+
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
+
+            var management = (from e in _context.Management
+                                    join department in _context.Department on e.DepartmentId equals department.Id
+                                    join usr in _context.Users on e.UserCreatedId equals usr.Id
+                                    join assignedUser in _context.Users on e.AssignedUserId equals assignedUser.Id
+                                    select new ManagamentForListDto{
+                                    Id = e.Id,
+                                    DepartmentId = department.Id,
+                                    Department = department.Description,
+                                    UserCreatedId = usr.Id,
+                                    UserCreated = usr.Names + " " + usr.LastName,
+                                    AssignedUserId = assignedUser.Id,
+                                    AssignedUser = assignedUser.Names + " " + assignedUser.LastName,
+                                    Description = e.Description,
+                                    File = e.File,
+                                    Response = e.Response,
+                                    Status = e.Status,
+                                    CreatedByUserId = e.CreatedByUserId,
+                                    CreatedAt = e.CreatedAt,
+                                    UpdatedByUserId = e.UpdatedByUserId,
+                                    UpdatedAt = e.UpdatedAt                                    
+                                }
+                            );
+                            // .Where(x => x.UserCreatedId == userId)
+                            // .ToListAsync();
+            if (user.RoleId != 1) {
+                management = management.Where(x => x.UserCreatedId == userId);
+            }
+
+            var list = await management.ToListAsync();
+
+            return list;
+        }
+
+        public async Task<List<ManagamentForListDto>> GetManagamentTracingByUser(int userId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
+
+            var management = (from e in _context.Management
+                                    join department in _context.Department on e.DepartmentId equals department.Id
+                                    join usr in _context.Users on e.UserCreatedId equals usr.Id
+                                    join assignedUser in _context.Users on e.AssignedUserId equals assignedUser.Id
+                                    select new ManagamentForListDto{
+                                    Id = e.Id,
+                                    DepartmentId = department.Id,
+                                    Department = department.Description,
+                                    UserCreatedId = usr.Id,
+                                    UserCreated = usr.Names + " " + usr.LastName,
+                                    AssignedUserId = assignedUser.Id,
+                                    AssignedUser = assignedUser.Names + " " + assignedUser.LastName,
+                                    Description = e.Description,
+                                    File = e.File,
+                                    Response = e.Response,
+                                    Status = e.Status,
+                                    CreatedByUserId = e.CreatedByUserId,
+                                    CreatedAt = e.CreatedAt,
+                                    UpdatedByUserId = e.UpdatedByUserId,
+                                    UpdatedAt = e.UpdatedAt                                    
+                                }
+                            );
+                            // .Where(x => x.UserCreatedId == userId)
+                            // .ToListAsync();
+            if (user.RoleId != 1) {
+                management = management.Where(x => x.AssignedUserId == userId);
+            }
+
+            var list = await management.ToListAsync();
+
+            return list;
+        }
+
         public async Task<List<ManagamentForListDto>> List()
         {
             var management = await (from e in _context.Management

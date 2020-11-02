@@ -16,5 +16,7 @@ namespace HelperDesk.API.Data
          Task<List<Department>> List();
 
          Task<Department> GetDepartment(int id);
+
+         Task<DepartmentForPosition> GetDepartmentForPosition(int positionId);
     }
 }

@@ -35,6 +35,7 @@ namespace HelperDesk.API.Controllers
         public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDTO)
         {
             userForRegisterDTO.Username = userForRegisterDTO.Email;
+            var operadorRolId = 3;
 
             if (await _repo.UserExists(userForRegisterDTO.Username))
                 return Ok(new { 
@@ -76,7 +77,8 @@ namespace HelperDesk.API.Controllers
                 Email = userForRegisterDTO.Email,
                 Phone = userForRegisterDTO.Phone,
                 GenderId = userForRegisterDTO.GenderId,
-                RoleId = userForRegisterDTO.RoleId,
+                // RoleId = userForRegisterDTO.RoleId,
+                RoleId = operadorRolId,
                 CompanyId = userForRegisterDTO.CompanyId,
                 status = userForRegisterDTO.status,
                 Username = userForRegisterDTO.Username,
@@ -283,7 +285,9 @@ namespace HelperDesk.API.Controllers
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, usr.Id.ToString()),
-                new Claim(ClaimTypes.Name, usr.Username)
+                new Claim(ClaimTypes.Name, usr.Username),
+                new Claim(ClaimTypes.Role, usr.RoleId.ToString()),
+                new Claim(ClaimTypes.GroupSid, usrs.PositionId.ToString())
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8

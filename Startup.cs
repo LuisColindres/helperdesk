@@ -47,13 +47,14 @@ namespace HelperDesk.API
         }
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-            // services.AddDbContext<DataContext>(x => x.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
+            // services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<DataContext>(x => x.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(opt => {
                     opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 });
             services.AddCors();
+            services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
             services.AddAutoMapper(typeof(RoleRepository).Assembly);
             services.AddAutoMapper(typeof(CompanyRepository).Assembly);
             services.AddAutoMapper(typeof(UserRepository).Assembly);
@@ -75,6 +76,7 @@ namespace HelperDesk.API
             services.AddScoped<IManagamentRepository, ManagamentRepository>();
             services.AddScoped<IEmailRepository, EmailRepository>();
             services.AddScoped<ISessionRepository, SessionRepository>();
+            services.AddScoped<IFileRepository, FileRepository>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {
                     options.TokenValidationParameters = new TokenValidationParameters

@@ -34,6 +34,14 @@ namespace HelperDesk.API.Controllers
             return Ok(department);
         }
 
+        [HttpGet("position/{id}")]
+        public async Task<IActionResult> GetDepartmentByPosition(int id)
+        {
+            var department = await _repo.GetDepartmentForPosition(id);
+
+            return Ok(department);
+        }
+
         [HttpPost("add")]
         public async Task<IActionResult> Add(Department department)
         {

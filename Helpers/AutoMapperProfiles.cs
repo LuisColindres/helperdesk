@@ -22,6 +22,8 @@ namespace HelperDesk.API.Helpers
             CreateMap<TracingStatus, TracingStatusForUpdateDto>().ReverseMap();
             CreateMap<Management, ManagamentForUpdateDto>().ReverseMap();
             CreateMap<Sessions, SessionForUpdateDto>().ReverseMap();
+            CreateMap<File, FileForUpdateDto>().ReverseMap();
+            CreateMap<Department, DepartmentForPosition>().ReverseMap();
         }
     }
 }
