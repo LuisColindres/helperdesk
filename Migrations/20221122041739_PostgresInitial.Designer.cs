@@ -5,18 +5,21 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HelperDesk.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201010120622_Email")]
-    partial class Email
+    [Migration("20221122041739_PostgresInitial")]
+    partial class PostgresInitial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
+                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("HelperDesk.API.Models.Company", b =>
                 {
@@ -48,6 +51,12 @@ namespace HelperDesk.API.Migrations
                     b.Property<string>("Description");
 
                     b.Property<int>("Status");
+
+                    b.Property<bool>("add");
+
+                    b.Property<bool>("delete");
+
+                    b.Property<bool>("edit");
 
                     b.HasKey("Id");
 
@@ -118,6 +127,34 @@ namespace HelperDesk.API.Migrations
                     b.ToTable("Email");
                 });
 
+            modelBuilder.Entity("HelperDesk.API.Models.File", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("DateAdded");
+
+                    b.Property<string>("Description");
+
+                    b.Property<int>("ManagementId");
+
+                    b.Property<int>("PositionId");
+
+                    b.Property<string>("PublicId");
+
+                    b.Property<string>("Url");
+
+                    b.Property<bool>("isMain");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ManagementId");
+
+                    b.HasIndex("PositionId");
+
+                    b.ToTable("File");
+                });
+
             modelBuilder.Entity("HelperDesk.API.Models.Gender", b =>
                 {
                     b.Property<int>("Id")
@@ -154,6 +191,8 @@ namespace HelperDesk.API.Migrations
                     b.Property<string>("Description");
 
                     b.Property<string>("File");
+
+                    b.Property<string>("Response");
 
                     b.Property<int>("Status");
 
@@ -486,6 +525,19 @@ namespace HelperDesk.API.Migrations
                     b.HasOne("HelperDesk.API.Models.Management", "Managament")
                         .WithMany()
                         .HasForeignKey("ManagamentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("HelperDesk.API.Models.File", b =>
+                {
+                    b.HasOne("HelperDesk.API.Models.Management", "Management")
+                        .WithMany()
+                        .HasForeignKey("ManagementId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("HelperDesk.API.Models.Position", "Position")
+                        .WithMany()
+                        .HasForeignKey("PositionId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

@@ -4,6 +4,7 @@ using HelperDesk.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HelperDesk.API.Migrations
 {
@@ -14,7 +15,9 @@ namespace HelperDesk.API.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
+                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("HelperDesk.API.Models.Company", b =>
                 {
@@ -46,6 +49,12 @@ namespace HelperDesk.API.Migrations
                     b.Property<string>("Description");
 
                     b.Property<int>("Status");
+
+                    b.Property<bool>("add");
+
+                    b.Property<bool>("delete");
+
+                    b.Property<bool>("edit");
 
                     b.HasKey("Id");
 
@@ -125,9 +134,9 @@ namespace HelperDesk.API.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<int?>("ManagementId");
+                    b.Property<int>("ManagementId");
 
-                    b.Property<int?>("PositionId");
+                    b.Property<int>("PositionId");
 
                     b.Property<string>("PublicId");
 
@@ -521,11 +530,13 @@ namespace HelperDesk.API.Migrations
                 {
                     b.HasOne("HelperDesk.API.Models.Management", "Management")
                         .WithMany()
-                        .HasForeignKey("ManagementId");
+                        .HasForeignKey("ManagementId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("HelperDesk.API.Models.Position", "Position")
                         .WithMany()
-                        .HasForeignKey("PositionId");
+                        .HasForeignKey("PositionId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("HelperDesk.API.Models.Management", b =>
