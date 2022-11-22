@@ -162,10 +162,10 @@ namespace HelperDesk.API
             }
 
             // app.UseHttpsRedirection();
-            // app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-             app.UseCors(
-                options => options.WithOrigins("https://localhost:5000").AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
-            );
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            //  app.UseCors(
+            //     options => options.WithOrigins("https://localhost:5000").AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
+            // );
             app.UseAuthentication();
             app.UseDefaultFiles();
             app.UseStaticFiles();
