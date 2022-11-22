@@ -37,7 +37,7 @@ namespace HelperDesk.API
             // services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDbContext<DataContext>(options => {
-                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection2"));
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
             });
             ConfigureServices(services);
         }
@@ -46,7 +46,7 @@ namespace HelperDesk.API
         {
             // services.AddDbContext<DataContext>(x => x.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDbContext<DataContext>(options => {
-                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection2"));
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
             });
             ConfigureServices(services);
         }
@@ -93,11 +93,12 @@ namespace HelperDesk.API
                 // or from the environment variable from Heroku, use it to set up your DbContext.
                 options.UseNpgsql(connStr);
             });
+            
+            services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(opt => {
                     opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 });
-            services.AddCors();
             services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
             services.AddAutoMapper(typeof(RoleRepository).Assembly);
             services.AddAutoMapper(typeof(CompanyRepository).Assembly);

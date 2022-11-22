@@ -557,11 +557,11 @@ namespace HelperDesk.API.Migrations
                 table: "Users",
                 column: "GenderId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_PositionId",
-                table: "Users",
-                column: "PositionId",
-                unique: true);
+            // migrationBuilder.CreateIndex(
+            //     name: "IX_Users_PositionId",
+            //     table: "Users",
+            //     column: "PositionId",
+            //     unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleId",

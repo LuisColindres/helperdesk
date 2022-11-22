@@ -82,7 +82,7 @@ namespace HelperDesk.API.Controllers
                 CompanyId = userForRegisterDTO.CompanyId,
                 status = userForRegisterDTO.status,
                 Username = userForRegisterDTO.Username,
-                PositionId = 6,
+                PositionId = 7,
                 Authy_id = id
             };
 
