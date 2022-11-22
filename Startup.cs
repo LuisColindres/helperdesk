@@ -57,6 +57,7 @@ namespace HelperDesk.API
             // services.AddDbContext<DataContext>(options => {
             //     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection2"));
             // });
+            services.AddCors();
             services.AddDbContext<DataContext>(options =>
             {
                 var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
@@ -94,7 +95,7 @@ namespace HelperDesk.API
                 options.UseNpgsql(connStr);
             });
             
-            services.AddCors();
+            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(opt => {
                     opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
@@ -161,7 +162,10 @@ namespace HelperDesk.API
             }
 
             // app.UseHttpsRedirection();
-            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            // app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+             app.UseCors(
+                options => options.WithOrigins("https://localhost:5000").AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
+            );
             app.UseAuthentication();
             app.UseDefaultFiles();
             app.UseStaticFiles();
